@@ -1,4 +1,4 @@
-# connect-nodejs-samples
+# connect-js-api
 Samples of using [Connect Open API](https://connect.spotware.com/documentation/section/api-reference) in JavaScript and Node.js
 
 ## How to get started your own app in JavaScript and Node.js:
