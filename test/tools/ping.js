@@ -1,15 +1,13 @@
 'use strict';
 
-var startPing = function (interval) {
+var ping = function (interval) {
     var name = 'ProtoPingReq';
-    var payloadType = this.protoMessagesCommon.getPayloadTypeByName(name);
+    var payloadType = this.protocol.getPayloadTypeByName(name);
     this.pingInterval = setInterval(function () {
         this.sendGuaranteedCommand(payloadType, {
             timestamp: Date.now()
-        }).then(function () {
-            console.log('PING_RES');
         });
     }.bind(this), interval);
 };
 
-module.exports = startPing;
+module.exports = ping;
