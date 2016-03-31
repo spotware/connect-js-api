@@ -1,3 +1,6 @@
 'use strict';
 
-module.exports = require('./lib/connect');
+module.exports = {
+    Connect: require('./lib/connect');
+    ProtoMessages: require('./lib/proto_messages');
+}
