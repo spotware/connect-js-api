@@ -1,36 +1,50 @@
 'use strict';
 
 var tls = require('tls');
+var ProtoMessages = require('../lib/proto_messages');
+var AdapterTLS = require('../lib/adapter_tls');
+var Stream = require('../lib/stream');
 var Connect = require('../lib/connect');
 var state = require('../lib/state');
-var ping = require('../lib/ping');
-var auth = require('../lib/auth');
-var subscribeForSpots = require('../lib/subscribe_for_spots');
+var ping = require('./tools/ping');
+var auth = require('./tools/auth');
+var subscribeForSpots = require('./tools/subscribe_for_spots');
 
 describe('Connect', function () {
     var connect;
+    var protoMessages;
 
     beforeAll(function () {
-        connect = new Connect({
-            gate: tls,
+        protoMessages = new ProtoMessages([
+            {
+                file: 'test/proto/CommonMessages.proto',
+                protoPayloadType: 'ProtoPayloadType'
+            },
+            {
+                file: 'test/proto/OpenApiMessages.proto',
+                protoPayloadType: 'ProtoOAPayloadType'
+            }
+        ]);
+
+        var adapter = new AdapterTLS({
             host: 'sandbox-tradeapi.spotware.com',
-            port: 5032,
-            proto: [
-                {
-                    file: 'proto/CommonMessages.proto',
-                    protoPayloadType: 'ProtoPayloadType'
-                },
-                {
-                    file: 'proto/OpenApiMessages.proto',
-                    protoPayloadType: 'ProtoOAPayloadType'
-                }
-            ]
+            port: 5032
+        });
+
+        var stream = new Stream();
+
+        connect = new Connect({
+            adapter: adapter,
+            protocol: protoMessages,
+            stream: stream
         });
     });
 
     it('loadProto', function () {
-        connect.loadProto();
-        var ProtoMessage = connect.protoMessagesCommon.getMessageByName('ProtoMessage');
+        protoMessages.load();
+        protoMessages.build();
+
+        var ProtoMessage = protoMessages.getMessageByName('ProtoMessage');
         var protoMessage = new ProtoMessage({
             payloadType: 1
         });
@@ -46,50 +60,44 @@ describe('Connect', function () {
         connect.start();
     });
 
-    it('ping', function () {
-        spyOn(connect, 'sendGuaranteedCommand');
-        ping.call(connect, 1000);
-        setTimeout(function () {
-            connect.sendGuaranteedCommand.toHaveBeenCalledTimes(5);
-        }, 5000);
-    });
-
-    it('ping 5 times', function () {
-        spyOn(connect, 'sendGuaranteedCommand');
-        ping.call(connect, 1000);
-        setTimeout(function () {
-            connect.sendGuaranteedCommand.toHaveBeenCalledTimes(5);
-        }, 5000);
-    });
-
     it('ping', function (done) {
         var name = 'ProtoPingReq';
-        var ProtoPingReq = connect.protoMessagesCommon.getMessageByName(name);
-        var payloadType = connect.protoMessagesCommon.getPayloadTypeByName(name);
+        var ProtoPingReq = protoMessages.getMessageByName(name);
+        var payloadType = protoMessages.getPayloadTypeByName(name);
         var msg = new ProtoPingReq({
             timestamp: Date.now()
         });
-        connect.sendGuaranteedCommand(payloadType, msg).then(done);
+        connect.sendGuaranteedCommand(payloadType, msg).then(function (respond) {
+            expect(respond.timestamp).toBeDefined();
+            done();
+        });
     });
 
     it('auth', function (done) {
-        auth.call(connect).then(done);
+        auth.call(connect, {
+            clientId: '7_5az7pj935owsss8kgokcco84wc8osk0g0gksow0ow4s4ocwwgc',
+            clientSecret: '49p1ynqfy7c4sw84gwoogwwsk8cocg8ow8gc8o80c0ws448cs4'
+        }).then(done);
     });
 
     it('subscribeForSpots', function (done) {
-        subscribeForSpots.call(connect, 'EURUSD').then(done);
+        subscribeForSpots.call(connect, {
+            accountId: 62002,
+            accessToken: 'test002_access_token',
+            symblolName: 'EURUSD'
+        }).then(done);
     });
 
     it('onError', function () {
-        var socket = connect.socket;
-        socket.on('error', function () {
+        var adapter = connect.adapter;
+        adapter._onError = function () {
             expect(connect.state).toBe(state.disconnected);
-        });
-        socket.write(new Buffer(0));
+        };
+        adapter.send(new Buffer(0));
     });
 
-    it('socket instanceof tls.TLSSocket', function () {
-        expect(connect.socket instanceof tls.TLSSocket).toBeTruthy();
+    it('adapter.socket instanceof tls.TLSSocket', function () {
+        expect(connect.adapter.socket instanceof tls.TLSSocket).toBeTruthy();
     });
 
 });

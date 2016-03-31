@@ -3,5 +3,8 @@
   "browser": true,
   "browserify": true,
   "jasmine": true,
-  "node": true
+  "node": true,
+  "globals": {
+    "Promise": true
+  }
 }

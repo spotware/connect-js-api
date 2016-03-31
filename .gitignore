@@ -25,3 +25,9 @@ build/Release
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+
+# Not public
+test/proto/CHMessages.proto
+test/proto/CHModelMessages.proto
+test/hub_connection.js
+test/load_test.js
