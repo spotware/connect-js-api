@@ -36,7 +36,6 @@ describe('Stream', function () {
         checkBuffer(buffer);
     });
 
-
     it('two messages in one buffer', function (done) {
         var count = 2;
 
