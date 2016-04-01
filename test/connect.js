@@ -52,11 +52,7 @@ describe('Connect', function () {
     });
 
     it('onConnect', function (done) {
-        connect.onConnect = function () {
-            connect.state = state.connected;
-            connect.onConnect = Connect.prototype.onConnect;
-            done();
-        };
+        connect.onConnect = done;
         connect.start();
     });
 
