@@ -1,8 +1,7 @@
 'use strict';
 
 var ping = function (interval) {
-    var name = 'ProtoPingReq';
-    var payloadType = this.protocol.getPayloadTypeByName(name);
+    var payloadType = this.protocol.getPayloadTypeByName('ProtoPingReq');
     this.pingInterval = setInterval(function () {
         this.sendGuaranteedCommand(payloadType, {
             timestamp: Date.now()

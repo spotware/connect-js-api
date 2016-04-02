@@ -59,16 +59,11 @@ describe('connect-nodejs-sample', function () {
                     symblolName: 'EURUSD'
                 }).then(function (respond) {
                     expect(respond.subscriptionId).toBeDefined();
+                    done();
                 });
             });
         };
 
-        connect.on(protoMessages.getPayloadTypeByName('ProtoOASpotEvent'), function (msg) {
-            expect(msg.bidPrice).toBeDefined();
-            expect(msg.askPrice).toBeDefined();
-            done();
-        });
-
         connect.start();
-    }, 10000);
+    });
 });

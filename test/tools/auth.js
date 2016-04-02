@@ -1,8 +1,7 @@
 'use strict';
 
 var auth = function (params) {
-    var name = 'ProtoOAAuthReq';
-    var payloadType = this.protocol.getPayloadTypeByName(name);
+    var payloadType = this.protocol.getPayloadTypeByName('ProtoOAAuthReq');
     return this.sendGuaranteedCommand(payloadType, {
         clientId: params.clientId,
         clientSecret: params.clientSecret

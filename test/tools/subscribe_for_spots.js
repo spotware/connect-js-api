@@ -1,8 +1,7 @@
 'use strict';
 
 var subscribeForSpots = function (params) {
-    var name ='ProtoOASubscribeForSpotsReq';
-    var payloadType = this.protocol.getPayloadTypeByName(name);
+    var payloadType = this.protocol.getPayloadTypeByName('ProtoOASubscribeForSpotsReq');
     return this.sendGuaranteedCommand(payloadType, {
         accountId: params.accountId,
         accessToken: params.accessToken,
