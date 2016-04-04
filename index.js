@@ -5,4 +5,4 @@ module.exports = {
     Connect: require('./lib/connect'),
     ProtoMessages: require('./lib/proto_messages'),
     Stream: require('./lib/stream')
-}
+};
