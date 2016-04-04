@@ -11,7 +11,7 @@
   "private": true,
   "scripts": {
     "start": "onchange 'lib/**/*.js' 'test/**/*.js' -- npm test",
-    "test": "istanbul cover --include-all-sources jasmine JASMINE_CONFIG_PATH=test/support/jasmine.json"
+    "test": "istanbul cover --include-all-sources node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=test/support/jasmine.json"
   },
   "dependencies": {
     "buffer": "4.5.1",
