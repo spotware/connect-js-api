@@ -2,7 +2,7 @@
 
 var ProtoMessages = require('../lib/proto_messages');
 var AdapterTLS = require('../lib/adapter_tls');
-var Stream = require('../lib/stream');
+var EncodeDecode = require('../lib/encode_decode');
 var Connect = require('../lib/connect');
 var state = require('../lib/state');
 var ping = require('./tools/ping');
@@ -30,12 +30,12 @@ describe('connect-nodejs-sample', function () {
             port: 5032
         });
 
-        var stream = new Stream();
+        var encodeDecode = new EncodeDecode();
 
         connect = new Connect({
             adapter: adapter,
-            protocol: protoMessages,
-            stream: stream
+            encodeDecode: encodeDecode,
+            protocol: protoMessages
         });
 
         ping = ping.bind(connect);
