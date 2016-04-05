@@ -5,7 +5,7 @@ var ProtoMessages = require('../lib/proto_messages');
 var EncodeDecode = require('../lib/encode_decode');
 var Buffer = require('buffer').Buffer;
 
-describe('', function () {
+describe('EncodeDecode', function () {
     var buffer;
     var encodeDecode;
     var protoMessages;
@@ -39,13 +39,13 @@ describe('', function () {
     it('two messages in one buffer', function (done) {
         var count = 2;
 
-        encodeDecode.onDecode = function (buffer) {
+        encodeDecode.registerDecodeHandler(function (buffer) {
             checkBuffer(buffer);
             count -= 1;
             if (count === 0) {
                 done();
             }
-        };
+        });
 
         encodeDecode.decode(Buffer.concat([buffer, buffer], 2 * buffer.length));
     });
@@ -53,13 +53,13 @@ describe('', function () {
     it('two messages and half in one frame and rest into second frame', function (done) {
         var count = 3;
 
-        encodeDecode.onDecode = function (buffer) {
+        encodeDecode.registerDecodeHandler(function (buffer) {
             checkBuffer(buffer);
             count -= 1;
             if (count === 0) {
                 done();
             }
-        };
+        });
 
         var firstHalfBuffer = buffer.slice(0, 5);
         var lastHalfBuffer = buffer.slice(5);
@@ -69,20 +69,20 @@ describe('', function () {
     });
 
     it('first part 1 byte', function (done) {
-        encodeDecode.onDecode = function (buffer) {
+        encodeDecode.registerDecodeHandler(function (buffer) {
             checkBuffer(buffer);
             done();
-        };
+        });
 
         encodeDecode.decode(buffer.slice(0, 1));
         encodeDecode.decode(buffer.slice(1));
     });
 
     it('first part 1 byte, second part 4 byte', function (done) {
-        encodeDecode.onDecode = function (buffer) {
+        encodeDecode.registerDecodeHandler(function (buffer) {
             checkBuffer(buffer);
             done();
-        };
+        });
 
         encodeDecode.decode(buffer.slice(0, 1));
         encodeDecode.decode(buffer.slice(1, 5));
@@ -90,10 +90,10 @@ describe('', function () {
     });
 
     it('cut to array of 1 byte', function (done) {
-        encodeDecode.onDecode = function (buffer) {
+        encodeDecode.registerDecodeHandler(function (buffer) {
             checkBuffer(buffer);
             done();
-        };
+        });
 
         for (var i = 1; i <= buffer.length; i += 1) {
             encodeDecode.decode(buffer.slice(i - 1, i));
@@ -101,10 +101,10 @@ describe('', function () {
     });
 
     it('first part 6 byte, second part 1 byte', function (done) {
-        encodeDecode.onDecode = function (buffer) {
+        encodeDecode.registerDecodeHandler(function (buffer) {
             checkBuffer(buffer);
             done();
-        };
+        });
 
         encodeDecode.decode(buffer.slice(0, 6));
         encodeDecode.decode(buffer.slice(6, 7));
@@ -112,10 +112,10 @@ describe('', function () {
     });
 
     it('last part 1 byte', function (done) {
-        encodeDecode.onDecode = function (buffer) {
+        encodeDecode.registerDecodeHandler(function (buffer) {
             checkBuffer(buffer);
             done();
-        };
+        });
 
         var separator = buffer.length - 1;
 
