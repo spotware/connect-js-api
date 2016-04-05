@@ -1,7 +1,7 @@
 'use strict';
 
 var fs = require('fs');
-var ProtoMessages = require('../lib/proto_messages');
+var ProtoMessages = require('connect-protobuf-messages');
 var EncodeDecode = require('../lib/encode_decode');
 var Buffer = require('buffer').Buffer;
 
@@ -14,7 +14,7 @@ describe('EncodeDecode', function () {
     beforeAll(function () {
         protoMessages = new ProtoMessages([
             {
-                file: 'test/proto/CommonMessages.proto',
+                file: 'node_modules/connect-protobuf-messages/src/main/protobuf/CommonMessages.proto',
                 protoPayloadType: 'ProtoPayloadType'
             }
         ]);
