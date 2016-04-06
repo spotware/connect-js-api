@@ -1,7 +1,7 @@
 'use strict';
 
 var tls = require('tls');
-var ProtoMessages = require('../lib/proto_messages');
+var ProtoMessages = require('connect-protobuf-messages');
 var AdapterTLS = require('../lib/adapter_tls');
 var EncodeDecode = require('../lib/encode_decode');
 var Connect = require('../lib/connect');
@@ -17,11 +17,11 @@ describe('Connect', function () {
     beforeAll(function () {
         protoMessages = new ProtoMessages([
             {
-                file: 'test/proto/CommonMessages.proto',
+                file: 'node_modules/connect-protobuf-messages/src/main/protobuf/CommonMessages.proto',
                 protoPayloadType: 'ProtoPayloadType'
             },
             {
-                file: 'test/proto/OpenApiMessages.proto',
+                file: 'node_modules/connect-protobuf-messages/src/main/protobuf/OpenApiMessages.proto',
                 protoPayloadType: 'ProtoOAPayloadType'
             }
         ]);

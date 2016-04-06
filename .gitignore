@@ -27,7 +27,6 @@ build/Release
 node_modules
 
 # Not public
-test/proto/CHMessages.proto
-test/proto/CHModelMessages.proto
+test/proto
 test/hub_connection.js
 test/load_test.js

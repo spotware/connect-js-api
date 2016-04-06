@@ -1,6 +1,6 @@
 {
   "name": "connect-js-api",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Connect API in JavaScript",
   "keywords": [
     "spotware",
@@ -14,11 +14,11 @@
     "test": "istanbul cover --include-all-sources node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=test/support/jasmine.json"
   },
   "dependencies": {
-    "buffer": "4.5.1",
-    "hat": "0.0.3",
-    "protobufjs": "5.0.1"
+    "buffer": "4.5.1"
   },
   "devDependencies": {
+    "connect-protobuf-messages": "spotware/connect-protobuf-messages",
+    "hat": "0.0.3",
     "istanbul": "0.4.2",
     "jasmine": "2.4.1",
     "onchange": "2.2.0",
