@@ -2,8 +2,8 @@
 
 var tls = require('tls');
 var ProtoMessages = require('connect-protobuf-messages');
-var AdapterTLS = require('../lib/adapter_tls');
-var EncodeDecode = require('../lib/encode_decode');
+var AdapterTLS = require('connect-js-adapter-tls');
+var EncodeDecode = require('connect-js-encode-decode');
 var Connect = require('../lib/connect');
 var state = require('../lib/state');
 var ping = require('./tools/ping');
