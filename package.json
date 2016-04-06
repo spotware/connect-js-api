@@ -1,6 +1,6 @@
 {
   "name": "connect-js-api",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Connect API in JavaScript",
   "keywords": [
     "spotware",
@@ -10,18 +10,15 @@
   "author": "Spotware Services <connect@spotware.com>",
   "private": true,
   "scripts": {
-    "start": "onchange 'lib/**/*.js' 'test/**/*.js' -- npm test",
     "test": "istanbul cover --include-all-sources node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=test/support/jasmine.json"
   },
-  "dependencies": {
-    "buffer": "4.5.1"
-  },
   "devDependencies": {
+    "connect-js-adapter-tls": "spotware/connect-js-adapter-tls",
+    "connect-js-encode-decode": "spotware/connect-js-encode-decode",
     "connect-protobuf-messages": "spotware/connect-protobuf-messages",
     "hat": "0.0.3",
     "istanbul": "0.4.2",
     "jasmine": "2.4.1",
-    "onchange": "2.2.0",
     "ws": "1.0.1"
   }
 }
