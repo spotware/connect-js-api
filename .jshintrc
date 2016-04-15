@@ -1,4 +1,5 @@
 {
+  "maxcomplexity": 2,
   "globalstrict": true,
   "browser": true,
   "browserify": true,
