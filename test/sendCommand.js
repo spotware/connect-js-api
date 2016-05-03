@@ -68,7 +68,7 @@ describe('sendCommand', function () {
         sendCommand().then(done);
     });
 
-    it('refect by closing connection', function (done) {
+    it('reject by closing connection', function (done) {
         makeAdapterLazy({
             respondDelay: 1000
         });
