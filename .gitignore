@@ -31,3 +31,15 @@ node_modules
 
 # Optional REPL history
 .node_repl_history
+
+# IDE
+.idea
+
+# javascript compiled files
+*.js
+
+# typescript source maps
+*.js.map
+
+# typescript d.ts
+lib/*.d.ts

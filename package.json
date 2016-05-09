@@ -1,0 +1,23 @@
+{
+  "name": "connect-ts-api",
+  "version": "1.0.0",
+  "main": "lib/connect.js",
+  "typescript": {
+    "main": "lib/connect.ts"
+  },
+  "typings": "lib/connect",
+  "files": [
+    "lib/"
+  ],
+  "description": "Connect API in TypeScript",
+  "keywords": [
+    "spotware",
+    "connect",
+    "ctratder"
+  ],
+  "author": "Spotware Services <connect@spotware.com>",
+  "private": true,
+  "devDependencies": {
+    "typescript": "^1.8.10"
+  }
+}
