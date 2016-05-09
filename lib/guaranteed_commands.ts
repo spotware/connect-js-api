@@ -3,9 +3,9 @@ import {State} from './state';
 
 export class GuaranteedCommands {
 
-    state: State;
-    send: any;
-    openCommands: any;
+    private state: State;
+    private send: any;
+    private openCommands: any;
 
     constructor(params: any) {
         this.state = params.state;
