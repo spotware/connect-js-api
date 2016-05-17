@@ -13,7 +13,7 @@ export class GuaranteedCommands {
         this.openCommands = [];
     }
 
-    public create(msg: any) {
+    public create(msg: any): JQueryDeferred<any> {
         var command = new GuaranteedCommand(msg);
 
         this.openCommands.push(command);
@@ -21,10 +21,10 @@ export class GuaranteedCommands {
         if (this.state.isConnected()) {
             this.send(msg);
         }
-        return command;
+        return command.promise;
     }
 
-    public resend = function () {
+    public resend() {
         this.openCommands
             .map(function (command) {
                 return command.msg;
@@ -32,7 +32,7 @@ export class GuaranteedCommands {
             .forEach(this.send);
     }
 
-    public findAndResolve = function (msg, clientMsgId) {
+    public findAndResolve(msg, clientMsgId) {
         var command = this.find(clientMsgId);
         if (command) {
             this.delete(command);
@@ -41,13 +41,13 @@ export class GuaranteedCommands {
         }
     }
 
-    public find = function (clientMsgId) {
+    private find(clientMsgId) {
         return this.openCommands.find(function (command) {
             return command.msg.clientMsgId === clientMsgId;
         });
     }
 
-    public delete = function (command) {
+    private delete(command) {
         var index = this.openCommands.indexOf(command);
         this.openCommands.splice(index, 1);
     }

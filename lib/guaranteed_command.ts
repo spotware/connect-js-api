@@ -1,23 +1,19 @@
 export class GuaranteedCommand {
 
     private msg: any;
-    private promise: Promise<any>;
-    private resolve: any;
+    public promise: JQueryDeferred<any>;
 
     constructor(msg: any) {
         this.msg = msg;
-        this.promise = new Promise((resolve) => {
-            this.resolve = resolve;
-        });
+        this.promise = $.Deferred();
     }
 
     public done(msg: any) {
-        this.resolve(msg);
+        this.promise.resolve(msg);
         this.destroy();
     }
 
-    public destroy() {
+    private destroy() {
         delete this.msg;
-        delete this.resolve;
     }
 }
