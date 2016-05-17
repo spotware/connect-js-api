@@ -11,6 +11,7 @@ export declare class GuaranteedCommand {
     promise: JQueryDeferred<any>;
     constructor(msg: any);
     done(msg: any): void;
+    fail(msg: any): void;
     private destroy();
 }
 export declare class GuaranteedCommands {
@@ -27,7 +28,7 @@ export declare class Command {
     promise: JQueryDeferred<any>;
     constructor(msg: any);
     done(respond: any): void;
-    fail(): void;
+    fail(respond: any): void;
     private destroy();
 }
 export declare class Commands {

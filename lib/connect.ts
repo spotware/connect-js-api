@@ -45,6 +45,11 @@ export class GuaranteedCommand {
         this.destroy();
     }
 
+    public fail(msg: any) {
+        this.promise.reject(msg);
+        this.destroy();
+    }
+
     private destroy() {
         delete this.msg;
     }
@@ -110,8 +115,8 @@ export class Command {
         this.destroy();
     }
 
-    public fail() {
-        this.promise.reject();
+    public fail(respond: any) {
+        this.promise.reject(respond);
         this.destroy();
     }
 
@@ -140,7 +145,7 @@ export class Commands {
         if (this.state.isConnected()) {
             this.send(msg);
         } else {
-            command.fail();
+            command.fail(<any>undefined);
         }
         return command.promise;
     }
@@ -274,11 +279,12 @@ export class Connect extends EventEmitter {
 
     protected processMessage(msg: any, clientMsgId: string, payloadType: number) {
         var command = this.guaranteedCommands.extract(clientMsgId) || this.commands.extract(clientMsgId);
-
-        if (this.isError(payloadType)) {
-            command.reject(msg);
-        } else {
-            command.resolve(msg);
+        if (command) {
+            if (this.isError(payloadType)) {
+                command.fail(msg);
+            } else {
+                command.done(msg);
+            }
         }
     }
 
