@@ -3,9 +3,9 @@ import {State} from './state';
 
 export class Commands {
 
-    public state: State;
-    public send: any;
-    public openCommands: any;
+    private state: State;
+    private send: any;
+    private openCommands: any;
 
     constructor(params: any) {
         this.state = params.state;
@@ -13,7 +13,7 @@ export class Commands {
         this.openCommands = [];
     }
 
-    public create(msg: any) {
+    public create(msg: any): JQueryDeferred<any> {
         var command = new Command(msg);
 
         this.openCommands.push(command);
@@ -23,7 +23,7 @@ export class Commands {
         } else {
             command.fail();
         }
-        return command;
+        return command.promise;
     }
 
     public findAndResolve(msg: any, clientMsgId: string) {
@@ -41,13 +41,13 @@ export class Commands {
         });
     }
 
-    public find(clientMsgId: string) {
+    private find(clientMsgId: string) {
         return this.openCommands.find(function (command) {
             return command.msg.clientMsgId === clientMsgId;
         });
     }
 
-    public delete(command: Command) {
+    private delete(command: Command) {
         var index = this.openCommands.indexOf(command);
         this.openCommands.splice(index, 1);
     }

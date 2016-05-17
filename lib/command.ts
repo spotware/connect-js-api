@@ -1,31 +1,24 @@
 export class Command {
 
     private msg: any;
-    private promise: Promise<any>;
-    private resolve: any;
-    private reject: any;
+    public promise: JQueryDeferred<any>;
 
     constructor(msg: any) {
         this.msg = msg;
-        this.promise = new Promise((resolve: any, reject: any) => {
-            this.resolve = resolve;
-            this.reject = reject;
-        });
+        this.promise = $.Deferred();
     }
 
     public done(respond: any) {
-        this.resolve(respond);
+        this.promise.resolve(respond);
         this.destroy();
     }
 
     public fail() {
-        this.reject();
+        this.promise.reject();
         this.destroy();
     }
 
-    public destroy() {
+    private destroy() {
         delete this.msg;
-        delete this.resolve;
-        delete this.reject;
     }
 }

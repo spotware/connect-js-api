@@ -1,6 +1,6 @@
 export class State {
 
-    public value: boolean;
+    private value: boolean;
 
     constructor() {
         this.disconnected();

@@ -36,10 +36,10 @@ node_modules
 .idea
 
 # javascript compiled files
-*.js
+#*.js
 
 # typescript source maps
-*.js.map
+#*.js.map
 
 # typescript d.ts
-lib/*.d.ts
+#lib/*.d.ts
