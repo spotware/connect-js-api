@@ -236,7 +236,10 @@ export class Connect extends EventEmitter {
             def.resolve();
         };
         adapter.onData = this.onData.bind(this);
-        adapter.onError = adapter.onEnd = this._onEnd.bind(this);
+        adapter.onError = adapter.onEnd = (e) => {
+            def.reject();
+            this._onEnd(e);
+        };
 
         adapter.connect();
 
