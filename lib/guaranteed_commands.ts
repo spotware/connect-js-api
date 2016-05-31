@@ -32,23 +32,19 @@ export class GuaranteedCommands {
             .forEach(this.send);
     }
 
-    public findAndResolve(msg, clientMsgId) {
-        var command = this.find(clientMsgId);
-        if (command) {
-            this.delete(command);
-            command.done(msg);
-            return true;
+    public extract(clientMsgId: string): any {
+        var openCommands = this.openCommands;
+        var openCommandsLength = openCommands.length;
+        var command;
+        var index = 0;
+        while (index < openCommandsLength) {
+            var command = openCommands[index];
+            if (command.msg.clientMsgId === clientMsgId) {
+                openCommands.splice(index, 1);
+                return command;
+            }
+            index += 1;
         }
     }
 
-    private find(clientMsgId) {
-        return this.openCommands.find(function (command) {
-            return command.msg.clientMsgId === clientMsgId;
-        });
-    }
-
-    private delete(command) {
-        var index = this.openCommands.indexOf(command);
-        this.openCommands.splice(index, 1);
-    }
 }

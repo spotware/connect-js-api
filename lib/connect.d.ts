@@ -1,11 +1,4 @@
 import { EventEmitter } from 'events';
-export declare class State {
-    private value;
-    constructor();
-    disconnected(): void;
-    connected(): void;
-    isConnected(): boolean;
-}
 export declare class GuaranteedCommand {
     private msg;
     promise: JQueryDeferred<any>;
