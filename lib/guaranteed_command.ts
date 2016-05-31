@@ -13,6 +13,11 @@ export class GuaranteedCommand {
         this.destroy();
     }
 
+    public fail(msg: any) {
+        this.promise.reject(msg);
+        this.destroy();
+    }
+
     private destroy() {
         delete this.msg;
     }

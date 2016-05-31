@@ -13,8 +13,8 @@ export class Command {
         this.destroy();
     }
 
-    public fail() {
-        this.promise.reject();
+    public fail(respond: any) {
+        this.promise.reject(respond);
         this.destroy();
     }
 

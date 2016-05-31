@@ -14,41 +14,43 @@ export class Commands {
     }
 
     public create(msg: any): JQueryDeferred<any> {
+        var openCommands = this.openCommands;
+
         var command = new Command(msg);
 
-        this.openCommands.push(command);
+        openCommands.push(command);
 
         if (this.state.isConnected()) {
             this.send(msg);
         } else {
-            command.fail();
+            command.fail(<any>undefined);
+            openCommands.splice(openCommands.indexOf(command), 1);
         }
         return command.promise;
     }
 
-    public findAndResolve(msg: any, clientMsgId: string) {
-        var command = this.find(clientMsgId);
-        if (command) {
-            this.delete(command);
-            command.done(msg);
-            return true;
+    public fail() {
+        var openCommands = this.openCommands;
+        var command;
+        for (var i = 0; i < openCommands.length; i += 1) {
+            command = openCommands.pop();
+            command.fail();
         }
     }
 
-    public fail() {
-        this.openCommands.forEach(function (command) {
-            command.fail();
-        });
+    public extract(clientMsgId: string): any {
+        var openCommands = this.openCommands;
+        var openCommandsLength = openCommands.length;
+        var command;
+        var index = 0;
+        while (index < openCommandsLength) {
+            var command = openCommands[index];
+            if (command.msg.clientMsgId === clientMsgId) {
+                openCommands.splice(index, 1);
+                return command;
+            }
+            index += 1;
+        }
     }
 
-    private find(clientMsgId: string) {
-        return this.openCommands.find(function (command) {
-            return command.msg.clientMsgId === clientMsgId;
-        });
-    }
-
-    private delete(command: Command) {
-        var index = this.openCommands.indexOf(command);
-        this.openCommands.splice(index, 1);
-    }
 }
