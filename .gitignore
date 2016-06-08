@@ -30,3 +30,4 @@ node_modules
 test/proto
 test/hub_connection.js
 test/load_test.js
+test/binary_websocket.js

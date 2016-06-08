@@ -4,13 +4,11 @@ var Socket = require('ws');
 
 var AdapterWebSocket = function (params) {
     this.socket = undefined;
-    this.host = params.host;
-    this.port = params.port;
+    this.url = params.url;
 };
 
 AdapterWebSocket.prototype.connect = function () {
-    var url = [this.host, this.port].join(':');
-    var socket = new Socket('wss://' + url);
+    var socket = new Socket(this.url);
     this.socket = socket;
     socket.onopen = this.onOpen;
     socket.onmessage = function (message) {

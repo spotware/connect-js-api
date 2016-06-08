@@ -4,16 +4,16 @@ var hat = require('hat');
 
 var TextMessages = function () {};
 
-TextMessages.prototype.encode = function (payloadType, params) {
+TextMessages.prototype.encode = function (payloadType, params, clientMsgId) {
     var message = params;
-    return this.wrap(payloadType, message);
+    return this.wrap(payloadType, message, clientMsgId);
 };
 
-TextMessages.prototype.wrap = function (payloadType, message) {
+TextMessages.prototype.wrap = function (payloadType, message, clientMsgId) {
     return {
         payloadType: payloadType,
         payload: message,
-        clientMsgId: hat()
+        clientMsgId: clientMsgId
     };
 };
 
