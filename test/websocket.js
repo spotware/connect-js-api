@@ -10,10 +10,9 @@ describe('WebSocket with text stream and json protocol', function () {
     var adapter;
     var textMessages;
 
-    beforeAll(function () {
+    beforeAll(function (done) {
         var adapter = new AdapterWebSocket({
-            host: 'x3.p.ctrader.com',
-            port: 5030
+            url: 'wss://x3.p.ctrader.com:5030'
         });
 
         textMessages = new TextMessages();
@@ -25,17 +24,16 @@ describe('WebSocket with text stream and json protocol', function () {
             encodeDecode: textEncodeDecode,
             protocol: textMessages
         });
+        connect.onConnect = done;
+        connect.start();
     });
 
     it('ping', function (done) {
-        connect.onConnect = function () {
-            this.sendGuaranteedCommand(52, {
-                timestamp: Date.now()
-            }).then(function (respond) {
-                expect(respond.timestamp).toBeDefined();
-                done();
-            });
-        };
-        connect.start();
+        connect.sendGuaranteedCommand(52, {
+            timestamp: Date.now()
+        }).then(function (respond) {
+            expect(respond.timestamp).toBeDefined();
+            done();
+        });
     });
 });
