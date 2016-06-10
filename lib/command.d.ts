@@ -3,6 +3,6 @@ export declare class Command {
     promise: JQueryDeferred<any>;
     constructor(msg: any);
     done(respond: any): void;
-    fail(): void;
+    fail(respond: any): void;
     private destroy();
 }

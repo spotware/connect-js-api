@@ -5,7 +5,5 @@ export declare class GuaranteedCommands {
     constructor(params: any);
     create(msg: any): JQueryDeferred<any>;
     resend(): void;
-    findAndResolve(msg: any, clientMsgId: any): boolean;
-    private find(clientMsgId);
-    private delete(command);
+    extract(clientMsgId: string): any;
 }

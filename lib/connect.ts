@@ -9,7 +9,6 @@ import {Commands} from './commands';
 import {Command} from './command';
 
 export interface IConnectionParams {
-    adapter: any
     encodeDecode: any
     protocol: any
 }
@@ -24,13 +23,16 @@ export class Connect extends EventEmitter {
     private commands: Commands;
 
     constructor(params: IConnectionParams) {
-        super()
+        super();
 
-        this.adapter = params.adapter;
         this.encodeDecode = params.encodeDecode;
         this.protocol = params.protocol;
 
         this.initialization();
+    }
+
+    public getAdapter() {
+        return this.adapter;
     }
 
     public setAdapter(adapter: any) {
@@ -53,8 +55,8 @@ export class Connect extends EventEmitter {
         );
     }
 
-    public start() {
-        var def = $.Deferred();
+    public start(): JQueryPromise<void> {
+        var def = $.Deferred<void>();
 
         var adapter = this.adapter;
         adapter.onOpen = () => {
@@ -69,7 +71,7 @@ export class Connect extends EventEmitter {
 
         adapter.connect();
 
-        return def;
+        return def.promise();
     }
 
     private onData(data) {

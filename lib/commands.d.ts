@@ -4,8 +4,6 @@ export declare class Commands {
     private openCommands;
     constructor(params: any);
     create(msg: any): JQueryDeferred<any>;
-    findAndResolve(msg: any, clientMsgId: string): boolean;
     fail(): void;
-    private find(clientMsgId);
-    private delete(command);
+    extract(clientMsgId: string): any;
 }
