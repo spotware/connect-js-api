@@ -18,7 +18,8 @@
   "author": "Spotware Services <connect@spotware.com>",
   "private": true,
   "dependencies": {
-      "ts-loader": "0.8.2"
+    "hat": "0.0.3",
+    "ts-loader": "0.8.2"
   },
   "devDependencies": {
     "typescript": "1.8.10"

@@ -1,10 +1,9 @@
 export class Command {
-
-    private msg: any;
+    public clientMsgId: string;
     public promise: JQueryDeferred<any>;
 
-    constructor(msg: any) {
-        this.msg = msg;
+    constructor(params) {
+        this.clientMsgId = params.clientMsgId;
         this.promise = $.Deferred();
     }
 
@@ -19,6 +18,6 @@ export class Command {
     }
 
     private destroy() {
-        delete this.msg;
+        delete this.clientMsgId;
     }
 }

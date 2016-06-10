@@ -17,12 +17,14 @@ export declare class Connect extends EventEmitter {
     start(): JQueryPromise<void>;
     private onData(data);
     private onOpen();
-    sendGuaranteedCommand(payloadType: any, params: any): JQueryDeferred<any>;
-    sendCommand(payloadType: any, params: any): JQueryDeferred<any>;
-    private send(msg);
+    sendGuaranteedCommand(payloadType: number, params: any): JQueryDeferred<any>;
+    sendCommand(payloadType: number, params: any): JQueryDeferred<any>;
+    private send(data);
     private onMessage(data);
+    private processData(clientMsgId, payloadType, msg);
+    private extractCommand(clientMsgId);
     protected isError(payloadType: any): boolean;
-    protected processMessage(msg: any, clientMsgId: string, payloadType: number): void;
+    protected processMessage(command: any, msg: any, payloadType: any): void;
     protected processPushEvent(msg: any, payloadType: any): void;
     private _onEnd(e);
     isDisconnected(): boolean;

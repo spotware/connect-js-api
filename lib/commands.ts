@@ -5,7 +5,7 @@ export class Commands {
 
     private state: State;
     private send: any;
-    private openCommands: any;
+    private openCommands: Command[];
 
     constructor(params: any) {
         this.state = params.state;
@@ -13,10 +13,15 @@ export class Commands {
         this.openCommands = [];
     }
 
-    public create(msg: any): JQueryDeferred<any> {
+    public create(params): JQueryDeferred<any> {
+        var clientMsgId = params.clientMsgId;
+        var msg = params.msg;
+
         var openCommands = this.openCommands;
 
-        var command = new Command(msg);
+        var command = new Command({
+            clientMsgId: clientMsgId
+        });
 
         openCommands.push(command);
 
@@ -38,18 +43,16 @@ export class Commands {
         }
     }
 
-    public extract(clientMsgId: string): any {
+    public extract(clientMsgId: string): Command {
         var openCommands = this.openCommands;
         var openCommandsLength = openCommands.length;
         var command;
-        var index = 0;
-        while (index < openCommandsLength) {
-            var command = openCommands[index];
-            if (command.msg.clientMsgId === clientMsgId) {
-                openCommands.splice(index, 1);
+        for (var i = 0; i < openCommandsLength; i += 1) {
+            command = openCommands[i];
+            if (command.clientMsgId === clientMsgId) {
+                openCommands.splice(i, 1);
                 return command;
             }
-            index += 1;
         }
     }
 

@@ -1,7 +1,8 @@
 export declare class GuaranteedCommand {
-    private msg;
+    clientMsgId: string;
+    msg: any;
     promise: JQueryDeferred<any>;
-    constructor(msg: any);
+    constructor(params: any);
     done(msg: any): void;
     fail(msg: any): void;
     private destroy();
