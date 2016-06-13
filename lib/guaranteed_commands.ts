@@ -5,7 +5,7 @@ export class GuaranteedCommands {
 
     private state: State;
     private send: any;
-    private openCommands: any;
+    private openCommands: GuaranteedCommand[];
 
     constructor(params: any) {
         this.state = params.state;
@@ -13,13 +13,13 @@ export class GuaranteedCommands {
         this.openCommands = [];
     }
 
-    public create(msg: any): JQueryDeferred<any> {
-        var command = new GuaranteedCommand(msg);
+    public create(params): JQueryDeferred<any> {
+        var command = new GuaranteedCommand(params);
 
         this.openCommands.push(command);
 
         if (this.state.isConnected()) {
-            this.send(msg);
+            this.send(command.msg);
         }
         return command.promise;
     }
@@ -32,18 +32,16 @@ export class GuaranteedCommands {
             .forEach(this.send);
     }
 
-    public extract(clientMsgId: string): any {
+    public extract(clientMsgId: string): GuaranteedCommand {
         var openCommands = this.openCommands;
         var openCommandsLength = openCommands.length;
         var command;
-        var index = 0;
-        while (index < openCommandsLength) {
-            var command = openCommands[index];
-            if (command.msg.clientMsgId === clientMsgId) {
-                openCommands.splice(index, 1);
+        for (var i = 0; i < openCommandsLength; i += 1) {
+            command = openCommands[i];
+            if (command.clientMsgId === clientMsgId) {
+                openCommands.splice(i, 1);
                 return command;
             }
-            index += 1;
         }
     }
 
