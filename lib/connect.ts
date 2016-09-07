@@ -230,7 +230,11 @@ export class Connect extends EventEmitter {
             payloadType,
             payload,
             result => {
-                def.resolve(result);
+                if (this.isError(result.payloadType)) {
+                    def.reject(result);
+                } else {
+                    def.resolve(result);
+                }
                 return true;
             },
             () => {
