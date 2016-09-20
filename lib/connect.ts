@@ -157,17 +157,17 @@ export class Connect extends EventEmitter {
         if (this.handlePushEvent) {
             this.handlePushEvent({payload: msg, payloadType});
         }
-        
+
         this.emit(payloadType, msg);
     }
 
     private _onEnd(e) {
         this._isConnected = false;
-        this.onEnd(e);
         this.incomingMessagesListeners.forEach(listener => {
             listener.disconnectHandler();
         });
         this.incomingMessagesListeners = [];
+        this.onEnd(e);
     }
 
     public isDisconnected() {
@@ -177,7 +177,7 @@ export class Connect extends EventEmitter {
     public isConnected() {
         return this._isConnected;
     }
-    
+
     private addIncomingMessagesListener (fnToAdd: IIncommingMessagesListener) {
         this.incomingMessagesListeners.push(fnToAdd);
     }
@@ -244,7 +244,7 @@ export class Connect extends EventEmitter {
 
         return def.promise();
     }
-    
+
     public sendGuaranteedCommandWithPayloadtype (payloadType: number, payload: Object): JQueryPromise<IMessageWOMsgId> {
         if (this.isConnected()) {
             return this.sendCommandWithPayloadtype(payloadType, payload);
