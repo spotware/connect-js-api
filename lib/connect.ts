@@ -213,9 +213,11 @@ export class Connect extends EventEmitter {
         this.addIncomingMessagesListener(incomingMessagesListener);
 
         if (this.isConnected()) {
+            const encodedMessage = this.protocol.encode(payloadType, payload, msgId);
             try {
-                this.send(this.protocol.encode(payloadType, payload, msgId));
+                this.send(encodedMessage);
             } catch (e) {
+                console.error('Error, sending message. Err:', e);
                 onError();
             }
         } else {
