@@ -11,7 +11,7 @@ var auth = require('./tools/auth');
 var subscribeForSpots = require('./tools/subscribe_for_spots');
 var createOrder = require('./tools/create_order');
 
-fdescribe('Connect', function () {
+describe('Connect', function () {
     var connect;
     var protoMessages;
 
