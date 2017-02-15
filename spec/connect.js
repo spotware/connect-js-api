@@ -9,6 +9,7 @@ var state = require('../lib/state');
 var ping = require('./tools/ping');
 var auth = require('./tools/auth');
 var subscribeForSpots = require('./tools/subscribe_for_spots');
+var createOrder = require('./tools/create_order');
 
 describe('Connect', function () {
     var connect;
@@ -76,12 +77,14 @@ describe('Connect', function () {
         }).then(done);
     });
 
-    it('subscribeForSpots', function (done) {
+    xit('subscribeForSpots', function (done) {
         subscribeForSpots.call(connect, {
             accountId: 62002,
             accessToken: 'test002_access_token',
             symblolName: 'EURUSD'
-        }).then(done);
+        }).then(function (d) {
+            console.log('subFSpot: ');console.dir(d);
+        });
     });
 
     it('onError', function () {
@@ -94,6 +97,21 @@ describe('Connect', function () {
 
     it('adapter.socket instanceof tls.TLSSocket', function () {
         expect(connect.adapter.socket instanceof tls.TLSSocket).toBeTruthy();
+    });
+
+    xit('createOrder', function (done) {
+        createOrder.call(connect, {
+            accountId: 62002,
+            accessToken: 'test002_access_token',
+            symbolName: 'EURUSD',
+            orderType: 1,
+            tradeSide: 1,
+            volume: 5699999.999999999,
+            clientOrderId: '1691',
+            comment: '1691'
+        }).then(function (respond) {
+            done();
+        });
     });
 
 });

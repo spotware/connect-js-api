@@ -43,7 +43,7 @@ describe('connect-nodejs-sample', function () {
         subscribeForSpots = subscribeForSpots.bind(connect);
     });
 
-    it('ping & auth & stops', function (done) {
+    xit('ping & auth & stops', function (done) {
         protoMessages.load();
         protoMessages.build();
 
