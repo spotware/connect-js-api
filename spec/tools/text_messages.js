@@ -1,7 +1,5 @@
 'use strict';
 
-var hat = require('hat');
-
 var TextMessages = function () {};
 
 TextMessages.prototype.encode = function (payloadType, params, clientMsgId) {
