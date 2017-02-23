@@ -1,6 +1,6 @@
 {
   "name": "connect-js-api",
-  "version": "2.5.1",
+  "version": "3.0.0",
   "description": "Connect API in JavaScript",
   "keywords": [
     "spotware",
@@ -20,6 +20,7 @@
     "hat": "0.0.3",
     "istanbul": "0.4.2",
     "jasmine": "2.5.3",
+    "state-emitter": "spotware/state-emitter#v1.0.0",
     "ws": "1.0.1"
   },
   "dependencies": {
