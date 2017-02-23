@@ -4,6 +4,7 @@ var TextMessages = require('./tools/text_messages');
 var AdapterWebSocket = require('./tools/adapter_websocket');
 var TextEncodeDecode = require('./tools/text_encode_decode');
 var Connect = require('../lib/connect');
+var StateEmitter = require('state-emitter').StateEmitter;
 
 describe('WebSocket with text stream and json protocol', function () {
     var connect;
@@ -15,12 +16,14 @@ describe('WebSocket with text stream and json protocol', function () {
             url: 'wss://x3.p.ctrader.com:5030'
         });
 
+        var adapterStream = new StateEmitter(adapter);
+
         textMessages = new TextMessages();
 
         var textEncodeDecode = new TextEncodeDecode();
 
         connect = new Connect({
-            adapter: adapter,
+            adapterStream: adapterStream,
             encodeDecode: textEncodeDecode,
             protocol: textMessages
         });
