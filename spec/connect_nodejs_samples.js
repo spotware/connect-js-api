@@ -8,7 +8,6 @@ var state = require('../lib/state');
 var ping = require('./tools/ping');
 var auth = require('./tools/auth');
 var subscribeForSpots = require('./tools/subscribe_for_spots');
-var StateEmitter = require('state-emitter').StateEmitter;
 
 describe('connect-nodejs-sample', function () {
     var connect;
@@ -31,12 +30,10 @@ describe('connect-nodejs-sample', function () {
             port: 5032
         });
 
-        var adapterStream = new StateEmitter(adapter);
-
         var encodeDecode = new EncodeDecode();
 
         connect = new Connect({
-            adapterStream: adapterStream,
+            adapter: adapter,
             encodeDecode: encodeDecode,
             protocol: protoMessages
         });
