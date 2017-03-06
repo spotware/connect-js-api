@@ -4,12 +4,10 @@ var ProtoMessages = require('connect-protobuf-messages');
 var AdapterTLS = require('connect-js-adapter-tls');
 var EncodeDecode = require('connect-js-encode-decode');
 var Connect = require('../lib/connect');
-var StateEmitter = require('state-emitter').StateEmitter;
 
 describe('sendCommand', function () {
     var connect;
     var adapter;
-    var adapterStream;
     var protoMessages;
     var encodeDecode;
     var payloadType;
@@ -50,10 +48,8 @@ describe('sendCommand', function () {
             port: 5032
         });
 
-        adapterStream = new StateEmitter(adapter);
-
         connect = new Connect({
-            adapterStream: adapterStream,
+            adapter: adapter,
             encodeDecode: encodeDecode,
             protocol: protoMessages
         });
