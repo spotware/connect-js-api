@@ -4,14 +4,15 @@ var ProtoMessages = require('connect-protobuf-messages');
 var AdapterTLS = require('connect-js-adapter-tls');
 var EncodeDecode = require('connect-js-encode-decode');
 var Connect = require('../lib/connect');
-var state = require('../lib/state');
 var ping = require('./tools/ping');
 var auth = require('./tools/auth');
 var subscribeForSpots = require('./tools/subscribe_for_spots');
 
 describe('connect-nodejs-sample', function () {
-    var connect;
-    var protoMessages;
+    var
+        adapter,
+        connect,
+        protoMessages;
 
     beforeAll(function () {
         protoMessages = new ProtoMessages([
@@ -25,7 +26,7 @@ describe('connect-nodejs-sample', function () {
             }
         ]);
 
-        var adapter = new AdapterTLS({
+        adapter = new AdapterTLS({
             host: 'sandbox-tradeapi.spotware.com',
             port: 5032
         });
@@ -47,7 +48,7 @@ describe('connect-nodejs-sample', function () {
         protoMessages.load();
         protoMessages.build();
 
-        connect.onConnect = function () {
+        adapter.onOpen(function () {
             ping(1000);
             auth({
                 clientId: '7_5az7pj935owsss8kgokcco84wc8osk0g0gksow0ow4s4ocwwgc',
@@ -62,8 +63,8 @@ describe('connect-nodejs-sample', function () {
                     done();
                 });
             });
-        };
+        });
 
-        connect.start();
+        adapter.connect();
     });
 });

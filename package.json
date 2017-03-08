@@ -10,10 +10,12 @@
   "author": "Spotware Services <connect@spotware.com>",
   "private": true,
   "scripts": {
+    "start": "npm test",
     "cover": "istanbul cover --include-all-sources jasmine",
     "test": "jasmine"
   },
   "devDependencies": {
+    "state-emitter": "spotware/state-emitter#v2.0.0",
     "connect-js-adapter-tls": "spotware/connect-js-adapter-tls",
     "connect-js-encode-decode": "spotware/connect-js-encode-decode",
     "connect-protobuf-messages": "spotware/connect-protobuf-messages#v1.2.0",

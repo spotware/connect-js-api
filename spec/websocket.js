@@ -6,26 +6,26 @@ var TextEncodeDecode = require('./tools/text_encode_decode');
 var Connect = require('../lib/connect');
 
 describe('WebSocket with text stream and json protocol', function () {
-    var connect;
-    var adapter;
-    var textMessages;
+    var
+        connect;
 
     beforeAll(function (done) {
-        var adapter = new AdapterWebSocket({
-            url: 'wss://x3.p.ctrader.com:5030'
-        });
-
-        textMessages = new TextMessages();
-
-        var textEncodeDecode = new TextEncodeDecode();
+        var
+            adapter = new AdapterWebSocket(),
+            textEncodeDecode = new TextEncodeDecode(),
+            textMessages = new TextMessages();
 
         connect = new Connect({
             adapter: adapter,
             encodeDecode: textEncodeDecode,
             protocol: textMessages
         });
-        connect.onConnect = done;
-        connect.start();
+
+        adapter.onOpen(function () {
+            done();
+        });
+
+        adapter.connect('wss://x3.p.ctrader.com:5030');
     });
 
     it('ping', function (done) {
