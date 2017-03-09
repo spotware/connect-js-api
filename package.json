@@ -1,6 +1,6 @@
 {
   "name": "connect-js-api",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Connect API in JavaScript",
   "keywords": [
     "spotware",
@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "state-emitter": "spotware/state-emitter#v2.0.0",
-    "connect-js-adapter-tls": "spotware/connect-js-adapter-tls",
+    "connect-js-adapter-tls": "spotware/connect-js-adapter-tls#v2.0.0",
     "connect-js-encode-decode": "spotware/connect-js-encode-decode",
     "connect-protobuf-messages": "spotware/connect-protobuf-messages#v1.2.0",
     "istanbul": "0.4.2",
