@@ -1,6 +1,5 @@
 'use strict';
 
-var tls = require('tls');
 var ProtoMessages = require('connect-protobuf-messages');
 var AdapterTLS = require('connect-js-adapter-tls');
 var EncodeDecode = require('connect-js-encode-decode');
@@ -10,13 +9,20 @@ var ping = require('./tools/ping');
 var auth = require('./tools/auth');
 var subscribeForSpots = require('./tools/subscribe_for_spots');
 var createOrder = require('./tools/create_order');
-var StateEmitter = require('state-emitter').StateEmitter;
 
 describe('Connect', function () {
+    var adapter;
     var connect;
     var protoMessages;
 
     beforeAll(function () {
+        adapter = new AdapterTLS({
+            host: 'sandbox-tradeapi.spotware.com',
+            port: 5032
+        });
+
+        var encodeDecode = new EncodeDecode();
+
         protoMessages = new ProtoMessages([
             {
                 file: 'node_modules/connect-protobuf-messages/src/main/protobuf/CommonMessages.proto',
@@ -28,17 +34,8 @@ describe('Connect', function () {
             }
         ]);
 
-        var adapter = new AdapterTLS({
-            host: 'sandbox-tradeapi.spotware.com',
-            port: 5032
-        });
-
-        var adapterStream = new StateEmitter(adapter);
-
-        var encodeDecode = new EncodeDecode();
-
         connect = new Connect({
-            adapterStream: adapterStream,
+            adapter: adapter,
             encodeDecode: encodeDecode,
             protocol: protoMessages
         });
@@ -56,8 +53,8 @@ describe('Connect', function () {
     });
 
     it('onConnect', function (done) {
-        connect.onConnect = done;
-        connect.start();
+        adapter.onOpen(done);
+        adapter.connect();
     });
 
     it('ping', function (done) {
@@ -96,10 +93,6 @@ describe('Connect', function () {
             expect(connect.state).toBe(state.disconnected);
         };
         adapter.send(new Buffer(0));
-    });
-
-    it('adapter.socket instanceof tls.TLSSocket', function () {
-        expect(connect.adapter.socket instanceof tls.TLSSocket).toBeTruthy();
     });
 
     xit('createOrder', function (done) {

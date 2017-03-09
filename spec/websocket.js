@@ -4,31 +4,28 @@ var TextMessages = require('./tools/text_messages');
 var AdapterWebSocket = require('./tools/adapter_websocket');
 var TextEncodeDecode = require('./tools/text_encode_decode');
 var Connect = require('../lib/connect');
-var StateEmitter = require('state-emitter').StateEmitter;
 
 describe('WebSocket with text stream and json protocol', function () {
-    var connect;
-    var adapter;
-    var textMessages;
+    var
+        connect;
 
     beforeAll(function (done) {
-        var adapter = new AdapterWebSocket({
-            url: 'wss://x3.p.ctrader.com:5030'
-        });
-
-        var adapterStream = new StateEmitter(adapter);
-
-        textMessages = new TextMessages();
-
-        var textEncodeDecode = new TextEncodeDecode();
+        var
+            adapter = new AdapterWebSocket(),
+            textEncodeDecode = new TextEncodeDecode(),
+            textMessages = new TextMessages();
 
         connect = new Connect({
-            adapterStream: adapterStream,
+            adapter: adapter,
             encodeDecode: textEncodeDecode,
             protocol: textMessages
         });
-        connect.onConnect = done;
-        connect.start();
+
+        adapter.onOpen(function () {
+            done();
+        });
+
+        adapter.connect('wss://x3.p.ctrader.com:5030');
     });
 
     it('ping', function (done) {
