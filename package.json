@@ -1,6 +1,6 @@
 {
   "name": "connect-js-api",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "Connect API in JavaScript",
   "keywords": [
     "spotware",
@@ -15,10 +15,11 @@
     "test": "jasmine"
   },
   "devDependencies": {
-    "state-emitter": "spotware/state-emitter#v2.0.0",
-    "connect-js-adapter-tls": "spotware/connect-js-adapter-tls#v2.0.0",
+    "state-emitter": "spotware/state-emitter#v2.0.2",
+    "connect-js-adapter-tls": "spotware/connect-js-adapter-tls#v3.0.3",
+    "connect-js-codec": "spotware/connect-js-codec#v1.0.2",
     "connect-js-encode-decode": "spotware/connect-js-encode-decode",
-    "connect-protobuf-messages": "spotware/connect-protobuf-messages#v1.2.0",
+    "connect-protobuf-messages": "spotware/connect-protobuf-messages#v2.0.0",
     "istanbul": "0.4.2",
     "jasmine": "2.5.3",
     "ws": "1.0.1"

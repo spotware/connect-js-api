@@ -5,7 +5,6 @@ var AdapterTLS = require('connect-js-adapter-tls');
 var EncodeDecode = require('connect-js-encode-decode');
 var Connect = require('../lib/connect');
 var ping = require('./tools/ping');
-var auth = require('./tools/auth');
 var subscribeForSpots = require('./tools/subscribe_for_spots');
 
 describe('connect-nodejs-sample', function () {
@@ -40,7 +39,6 @@ describe('connect-nodejs-sample', function () {
         });
 
         ping = ping.bind(connect);
-        auth = auth.bind(connect);
         subscribeForSpots = subscribeForSpots.bind(connect);
     });
 
@@ -50,7 +48,7 @@ describe('connect-nodejs-sample', function () {
 
         adapter.onOpen(function () {
             ping(1000);
-            auth({
+            connect.sendGuaranteedCommand(protoMessages.getPayloadTypeByName('ProtoOAAuthReq'), {
                 clientId: '7_5az7pj935owsss8kgokcco84wc8osk0g0gksow0ow4s4ocwwgc',
                 clientSecret: '49p1ynqfy7c4sw84gwoogwwsk8cocg8ow8gc8o80c0ws448cs4'
             }).then(function (respond) {
