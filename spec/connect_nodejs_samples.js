@@ -7,7 +7,7 @@ var Connect = require('../lib/connect');
 var ping = require('./tools/ping');
 var subscribeForSpots = require('./tools/subscribe_for_spots');
 
-describe('connect-nodejs-sample', function () {
+xdescribe('connect-nodejs-sample', function () {
     var
         adapter,
         connect,
