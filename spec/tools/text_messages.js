@@ -2,15 +2,10 @@
 
 var TextMessages = function () {};
 
-TextMessages.prototype.encode = function (payloadType, params, clientMsgId) {
-    var message = params;
-    return this.wrap(payloadType, message, clientMsgId);
-};
-
-TextMessages.prototype.wrap = function (payloadType, message, clientMsgId) {
+TextMessages.prototype.encode = function (payloadType, payload, clientMsgId) {
     return {
         payloadType: payloadType,
-        payload: message,
+        payload: payload,
         clientMsgId: clientMsgId
     };
 };
@@ -19,8 +14,8 @@ TextMessages.prototype.decode = function (data) {
     var protoMessage = JSON.parse(data);
 
     return {
-        msg: protoMessage.payload,
         payloadType: protoMessage.payloadType,
+        payload: protoMessage.payload,
         clientMsgId: protoMessage.clientMsgId
     };
 };
