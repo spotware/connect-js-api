@@ -3,10 +3,10 @@
 var ProtoMessages = require('connect-protobuf-messages');
 var AdapterTLS = require('connect-js-adapter-tls');
 var EncodeDecode = require('connect-js-encode-decode');
+var createCodec = require('connect-js-codec');
 var Connect = require('../lib/connect');
 var state = require('../lib/state');
 var ping = require('./tools/ping');
-var auth = require('./tools/auth');
 var subscribeForSpots = require('./tools/subscribe_for_spots');
 var createOrder = require('./tools/create_order');
 
@@ -14,6 +14,7 @@ describe('Connect', function () {
     var adapter;
     var connect;
     var protoMessages;
+    var codec;
 
     beforeAll(function () {
         adapter = new AdapterTLS({
@@ -34,10 +35,11 @@ describe('Connect', function () {
             }
         ]);
 
+        codec = createCodec(adapter, encodeDecode, protoMessages);
+
         connect = new Connect({
             adapter: adapter,
-            encodeDecode: encodeDecode,
-            protocol: protoMessages
+            codec: codec
         });
     });
 
@@ -58,23 +60,27 @@ describe('Connect', function () {
     });
 
     it('ping', function (done) {
-        var name = 'ProtoPingReq';
-        var ProtoPingReq = protoMessages.getMessageByName(name);
-        var payloadType = protoMessages.getPayloadTypeByName(name);
-        var msg = new ProtoPingReq({
-            timestamp: Date.now()
-        });
-        connect.sendGuaranteedCommand(payloadType, msg).then(function (respond) {
-            expect(respond.timestamp).toBeDefined();
+        var
+            payloadType = 52,
+            payload = {
+                timestamp: Date.now()
+            };
+
+        connect.sendGuaranteedCommand(payloadType, payload).then(function (payload) {
+            expect(payload.timestamp).toBeDefined();
             done();
         });
     });
 
     it('auth', function (done) {
-        auth.call(connect, {
-            clientId: '7_5az7pj935owsss8kgokcco84wc8osk0g0gksow0ow4s4ocwwgc',
-            clientSecret: '49p1ynqfy7c4sw84gwoogwwsk8cocg8ow8gc8o80c0ws448cs4'
-        }).then(done);
+        var
+            payloadType = protoMessages.getPayloadTypeByName('ProtoOAAuthReq'),
+            payload = {
+                clientId: '7_5az7pj935owsss8kgokcco84wc8osk0g0gksow0ow4s4ocwwgc',
+                clientSecret: '49p1ynqfy7c4sw84gwoogwwsk8cocg8ow8gc8o80c0ws448cs4'
+            };
+
+        connect.sendGuaranteedCommand(payloadType, payload).then(done);
     });
 
     xit('subscribeForSpots', function (done) {

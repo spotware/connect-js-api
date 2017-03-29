@@ -1,28 +1,26 @@
 'use strict';
 
 var TextMessages = require('./tools/text_messages');
-var AdapterWebSocket = require('./tools/adapter_websocket');
+var createAdapter = require('./tools/adapter_websocket');
 var TextEncodeDecode = require('./tools/text_encode_decode');
 var Connect = require('../lib/connect');
+var createCodec = require('connect-js-codec');
 
 describe('WebSocket with text stream and json protocol', function () {
     var
         connect;
 
-    beforeAll(function (done) {
+    beforeAll(function () {
         var
-            adapter = new AdapterWebSocket(),
+            adapter = createAdapter(),
             textEncodeDecode = new TextEncodeDecode(),
-            textMessages = new TextMessages();
+            textMessages = new TextMessages(),
+            codec = createCodec(adapter, textEncodeDecode, textMessages);
+
 
         connect = new Connect({
             adapter: adapter,
-            encodeDecode: textEncodeDecode,
-            protocol: textMessages
-        });
-
-        adapter.onOpen(function () {
-            done();
+            codec: codec
         });
 
         adapter.connect('wss://x3.p.ctrader.com:5030');

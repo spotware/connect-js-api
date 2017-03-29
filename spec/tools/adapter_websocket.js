@@ -1,49 +1,48 @@
 'use strict';
 
-var Socket = require('ws');
-var StateEmitter = require('state-emitter').StateEmitter;
+var
+    WebSocket = require('ws'),
+    StateEmitter = require('state-emitter').StateEmitter;
 
-var AdapterWebSocket = function () {
-    this.state = new StateEmitter(undefined);
-};
-
-AdapterWebSocket.prototype.connect = function (url) {
+module.exports = function (params) {
     var
-        ondata = this.ondata,
-        state = this.state,
-        socket = new Socket(url);
+        ondata,
+        socket,
+        connected = true,
+        disconnected = false,
+        state = new StateEmitter();
 
-    socket.onmessage = function (message) {
-        ondata(message.data);
-    };
-    socket.onopen = function () {
-        state.next(true);
-    };
-    socket.onclose = function () {
-        state.next(false);
-    };
-    socket.onerror = function () {
-        state.next(false);
-    };
-    this.send = function (data) {
-        socket.send(data);
+    return {
+        connect: function (url) {
+            var
+                setDisconnected = function () {
+                    state.next(disconnected);
+                };
+
+            socket = new WebSocket(url);
+            socket.onmessage = function (message) {
+                ondata(message.data);
+            };
+            socket.onopen = function () {
+                state.next(connected);
+            };
+            socket.onend = setDisconnected;
+            socket.onerror = setDisconnected;
+        },
+        send: function (data) {
+            socket.send(data);
+        },
+        onOpen: function (callback) {
+            state.whenEqual(connected, callback);
+        },
+        onEnd: function (callback) {
+            state.whenEqual(disconnected, callback);
+        },
+        onError: function (callback) {
+            state.whenEqual(disconnected, callback);
+        },
+        onData: function (callback) {
+            ondata = callback;
+        }
     };
 };
-
-AdapterWebSocket.prototype.onOpen = function (onopen) {
-    this.state.whenEqual(true, onopen);
-};
-
-AdapterWebSocket.prototype.onEnd = function (onend) {
-    this.state.whenEqual(false, onend);
-};
-
-AdapterWebSocket.prototype.onError = function (onerror) {
-    this.state.whenEqual(false, onerror);
-};
-
-AdapterWebSocket.prototype.onData = function (ondata) {
-    this.ondata = ondata;
-};
-
-module.exports = AdapterWebSocket;
