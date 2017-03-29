@@ -10,7 +10,7 @@ var ping = require('./tools/ping');
 var subscribeForSpots = require('./tools/subscribe_for_spots');
 var createOrder = require('./tools/create_order');
 
-fdescribe('Connect', function () {
+describe('Connect', function () {
     var adapter;
     var connect;
     var protoMessages;
@@ -93,7 +93,7 @@ fdescribe('Connect', function () {
         });
     });
 
-    xit('onError', function () {
+    it('onError', function () {
         var adapter = connect.adapter;
         adapter._onError = function () {
             expect(connect.state).toBe(state.disconnected);
